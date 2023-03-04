@@ -16,7 +16,10 @@ import { HttpClientModule } from "@angular/common/http";
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: Storage,
+    useValue: localStorage
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
