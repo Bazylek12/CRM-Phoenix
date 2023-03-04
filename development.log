@@ -1,0 +1,120 @@
+[info] [API] Request for flow/create-entity: {
+	"action": "flow/create-entity",
+	"params": {},
+	"context": {
+		"workspace": {
+			"rootPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix"
+		},
+		"userContext": {
+			"id": "15Du8DZh2Z",
+			"correlationId": "vDYo7iOJk1",
+			"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.component.spec.ts",
+			"logEnvId": "development"
+		}
+	},
+	"level": "info",
+	"message": "[API] Request for flow/create-entity"
+}
+[error] [API]: Error Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json: {
+	"loggerData": {
+		"action": "flow/create-entity",
+		"params": {},
+		"context": {
+			"workspace": {
+				"rootPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix"
+			},
+			"userContext": {
+				"id": "15Du8DZh2Z",
+				"correlationId": "vDYo7iOJk1",
+				"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.component.spec.ts",
+				"logEnvId": "development"
+			}
+		}
+	},
+	"error": {},
+	"stack": "Error: Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json\n    at getCodingStandards (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:7277:15)\n    at async getWorkspaceQueryHandler (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:7503:29)\n    at async outputResult (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:16741:31)",
+	"level": "error",
+	"message": "[API]: Error Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json"
+}
+[info] [API] Request for entity/actions: {
+	"action": "entity/actions",
+	"params": {
+		"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.component.ts",
+		"position": 233
+	},
+	"context": {
+		"workspace": {
+			"rootPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix"
+		},
+		"userContext": {
+			"id": "15Du8DZh2Z",
+			"correlationId": "O_XAQO_MC4",
+			"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.component.ts",
+			"logEnvId": "development"
+		}
+	},
+	"level": "info",
+	"message": "[API] Request for entity/actions"
+}
+[error] [API]: Error Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json: {
+	"loggerData": {
+		"action": "entity/actions",
+		"params": {
+			"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.component.ts",
+			"position": 233
+		},
+		"context": {
+			"workspace": {
+				"rootPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix"
+			},
+			"userContext": {
+				"id": "15Du8DZh2Z",
+				"correlationId": "O_XAQO_MC4",
+				"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.component.ts",
+				"logEnvId": "development"
+			}
+		}
+	},
+	"error": {},
+	"stack": "Error: Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json\n    at getCodingStandards (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:7277:15)\n    at async getWorkspaceQueryHandler (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:7503:29)\n    at async outputResult (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:16741:31)",
+	"level": "error",
+	"message": "[API]: Error Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json"
+}
+[info] [API] Request for flow/create-entity: {
+	"action": "flow/create-entity",
+	"params": {},
+	"context": {
+		"workspace": {
+			"rootPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix"
+		},
+		"userContext": {
+			"id": "15Du8DZh2Z",
+			"correlationId": "-MyklDIIK8",
+			"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.module.ts",
+			"logEnvId": "development"
+		}
+	},
+	"level": "info",
+	"message": "[API] Request for flow/create-entity"
+}
+[error] [API]: Error Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json: {
+	"loggerData": {
+		"action": "flow/create-entity",
+		"params": {},
+		"context": {
+			"workspace": {
+				"rootPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix"
+			},
+			"userContext": {
+				"id": "15Du8DZh2Z",
+				"correlationId": "-MyklDIIK8",
+				"clickedPath": "/Users/anitaczuper/WebstormProjects/CRM-Phoenix/ng-material-starter-kit-x-main/src/app/app.module.ts",
+				"logEnvId": "development"
+			}
+		}
+	},
+	"error": {},
+	"stack": "Error: Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json\n    at getCodingStandards (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:7277:15)\n    at async getWorkspaceQueryHandler (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:7503:29)\n    at async outputResult (/Users/anitaczuper/Library/Application Support/JetBrains/WebStorm2022.3/plugins/LowgularJPlugin/cli/main.js:16741:31)",
+	"level": "error",
+	"message": "[API]: Error Could not resolve workspace configuration. Please add workspace.workspaceConfig value in coding-standards.json"
+}
