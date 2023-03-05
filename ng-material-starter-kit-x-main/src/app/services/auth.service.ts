@@ -6,6 +6,7 @@ import {CredentialModel} from '../models/credential.model';
 import {LoginResponse} from '../responses/login.response';
 import {ApiResponse} from '../responses/api.response';
 import {environment} from '../../environments/environment';
+import {RegisterResponse} from "../responses/register.response";
 
 @Injectable()
 export class AuthService {
@@ -30,5 +31,16 @@ export class AuthService {
         this._refreshTokenSubject.next(response.refreshToken)
       })
     );
+  }
+
+  register(credentials: CredentialModel): Observable<RegisterResponse> {
+    return this._httpClient.post<ApiResponse<RegisterResponse>>(`${environment.apiUrl}/auth/register2`, {
+      data: credentials
+    }).pipe(
+      map(response => response.data),
+      tap(response => {
+        console.log(response)
+      })
+    )
   }
 }
