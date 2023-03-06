@@ -17,7 +17,8 @@ export class LoginComponent {
       Validators.email
     ]),
     password: new FormControl('',
-      Validators.required)
+      Validators.required),
+    isRemembered: new FormControl(false)
   });
 
   constructor(private _authService: AuthService, private _router: Router, private _cdr: ChangeDetectorRef) {
