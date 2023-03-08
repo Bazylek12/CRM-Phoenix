@@ -46,7 +46,8 @@ export class AuthService {
     )
   }
   public logout(): void {
-    this._isLoggedInSubject.next(false)
+    this._accessTokenSubject.next('')
+    this._refreshTokenSubject.next('')
     this._storage.clear()
   }
   private isUserLoggedIn(): boolean {

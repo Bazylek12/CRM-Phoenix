@@ -29,9 +29,9 @@
 
                         </div>
                     </a>
-                        <div    *ngIf="userDetails$ | async as user"
-                                class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border border-300"
-                                aria-labelledby="navbarDropdownUser">
+                        <div *ngIf="userDetails$ | async as user"
+                             class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border border-300"
+                             aria-labelledby="navbarDropdownUser">
                             <div class="card position-relative border-0">
                                 <div class="card-body p-0">
                                     <div class="text-center pt-4 pb-3">
@@ -46,8 +46,9 @@
 
                                 <div class="card-footer p-0 border-top">
                                     <div class="px-3 mt-3"><a class="btn btn-phoenix-secondary d-flex flex-center w-100"
-                                                              href="#!">
-                                       <i-feather class="me-2" name="log-out"></i-feather>Sign out</a></div>
+                                                              (click)="logout()">
+                                        <i-feather class="me-2" name="log-out"></i-feather>
+                                        Sign out</a></div>
                                     <div class="my-2 text-center fw-bold fs--2 text-600"><a class="text-600 me-1"
                                                                                             href="#!">Privacy
                                         policy</a>&bull;<a class="text-600 mx-1" href="#!">Terms</a>&bull;<a

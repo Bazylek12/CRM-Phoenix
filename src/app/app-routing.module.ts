@@ -14,6 +14,8 @@ import {BioComponentModule} from './components/bio/bio.component-module';
 import {IsVerifiedGuard} from "./gaurds/is-verified/is-verified.guard";
 import {IsProfileCompletedGuard} from "./gaurds/is-profile-completed/is-profile-completed.guard";
 import {IsLoggedInGuard} from "./gaurds/is-logged-in/is-logged-in.guard";
+import {LogoutComponent} from "./components/logout/logout.component";
+import {LogoutComponentModule} from "./components/logout/logout.component-module";
 
 @NgModule({
     imports: [RouterModule.forRoot([{
@@ -47,7 +49,10 @@ import {IsLoggedInGuard} from "./gaurds/is-logged-in/is-logged-in.guard";
             data: {
                 loginUrl: '/auth/login'
             }
-        }]), LoginComponentModule, AuthServiceModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
+        },  {
+            path: 'logged-out',
+            component: LogoutComponent
+        }]), LoginComponentModule, AuthServiceModule, LogoutComponentModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
     exports: [RouterModule]
 })
 export class AppRoutingModule {
