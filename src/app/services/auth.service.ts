@@ -45,7 +45,10 @@ export class AuthService {
       })
     )
   }
-
+  public logout(): void {
+    this._isLoggedInSubject.next(false)
+    this._storage.clear()
+  }
   private isUserLoggedIn(): boolean {
     return this._storage.hasOwnProperty('accessToken') ?? false
   }
