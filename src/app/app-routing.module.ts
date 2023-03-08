@@ -12,28 +12,31 @@ import {RegisterComponentModule} from './components/register/register.component-
 import {VerifyComponentModule} from './components/verify/verify.component-module';
 import {BioComponentModule} from './components/bio/bio.component-module';
 import {IsVerifiedGuard} from "./gaurds/is-verified/is-verified.guard";
+import {IsProfileCompletedGuard} from "./gaurds/is-profile-completed/is-profile-completed.guard";
 
 @NgModule({
     imports: [RouterModule.forRoot([{
-      path: 'auth/login',
-      component: LoginComponent
+        path: 'auth/login',
+        component: LoginComponent
     }, {
-      path: 'leads',
-      component: LeadsComponent,
-      canActivate: [IsVerifiedGuard],
-      data: {
-        verifyUrl: '/verify'
-      }
+        path: 'leads',
+        component: LeadsComponent,
+        canActivate: [IsVerifiedGuard, IsProfileCompletedGuard],
+        data: {
+            verifyUrl: '/verify',
+            addBioUrl: '/complete-profile'
+        }
     }, {
-      path: 'auth/register',
-      component: RegisterComponent},
-      {
-        path: 'verify',
-        component: VerifyComponent
-    }, {
-        path: 'add-bio',
-        component: BioComponent
-    }]), LoginComponentModule, AuthServiceModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
+        path: 'auth/register',
+        component: RegisterComponent
+    },
+        {
+            path: 'verify',
+            component: VerifyComponent
+        }, {
+            path: 'complete-profile',
+            component: BioComponent
+        }]), LoginComponentModule, AuthServiceModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

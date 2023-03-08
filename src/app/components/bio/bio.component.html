@@ -37,22 +37,22 @@
                                 </div>
                                 <div class="col mx-auto">
                                     <div class="auth-form-box">
-                                        <div class="text-center mb-5">
+                                        <div class="text-center mb-5" *ngIf="userDetails$ | async as user">
                                             <div class="avatar avatar-4xl mb-4"><img class="rounded-circle"
                                                                                      src="../../../assets/img/team/30.webp"
                                                                                      alt=""/></div>
-                                            <h2 class="text-1000"><span class="fw-normal">Hello </span>John Smith</h2>
+                                            <h2 class="text-1000"><span class="fw-normal">Hello </span>{{ user.user.context.email }}</h2>
                                             <p class="text-700">Write down something about yourself</p>
                                         </div>
                                         <form [formGroup]="completeBio" (ngSubmit)="onCompleteBioSubmitted(completeBio)">
                                         <textarea class="form-control mb-3" placeholder="Write bio here..."
                                                   rows="8" formControlName="content"></textarea>
                                             <div class="text-danger fs--1"
-                                                 *ngIf="completeBio.get('content')?.touched && completeBio.get('content')?.invalid">
-                                                Name required
+                                                 *ngIf="completeBio.get('content')?.touched && completeBio.get('content')?.dirty && completeBio.get('content')?.invalid">
+                                                Bio should contain at least 10 words and 2 sentences!
                                             </div>
                                         <button
-                                                class="btn btn-primary w-100" href="../../../index.html">Send
+                                                class="btn btn-primary w-100" type="submit" [disabled]="!completeBio.valid">Send
                                         </button>
                                         </form>
                                     </div>

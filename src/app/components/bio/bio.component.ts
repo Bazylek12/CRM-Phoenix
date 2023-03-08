@@ -5,6 +5,7 @@ import {UserResponse} from '../../responses/user.response';
 import {UsersService} from '../../services/users.service';
 import {take} from "rxjs/operators";
 import {BioValidator} from "../../validators/bio.validator";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-bio',
@@ -21,13 +22,15 @@ export class BioComponent {
         ])
     });
 
-    constructor(private _usersService: UsersService) {
+    constructor(private _usersService: UsersService, private _router: Router) {
     }
 
     onCompleteBioSubmitted(completeBio: FormGroup): void {
         if (!completeBio.valid) return
         this._usersService.addBio(completeBio.value.content).pipe(
             take(1)
-        ).subscribe({})
+        ).subscribe({
+            next: () => this._router.navigate(['/leads'])
+        })
     }
 }
