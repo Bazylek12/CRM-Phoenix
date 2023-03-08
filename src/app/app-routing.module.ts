@@ -13,6 +13,7 @@ import {VerifyComponentModule} from './components/verify/verify.component-module
 import {BioComponentModule} from './components/bio/bio.component-module';
 import {IsVerifiedGuard} from "./gaurds/is-verified/is-verified.guard";
 import {IsProfileCompletedGuard} from "./gaurds/is-profile-completed/is-profile-completed.guard";
+import {IsLoggedInGuard} from "./gaurds/is-logged-in/is-logged-in.guard";
 
 @NgModule({
     imports: [RouterModule.forRoot([{
@@ -21,10 +22,11 @@ import {IsProfileCompletedGuard} from "./gaurds/is-profile-completed/is-profile-
     }, {
         path: 'leads',
         component: LeadsComponent,
-        canActivate: [IsVerifiedGuard, IsProfileCompletedGuard],
+        canActivate: [IsLoggedInGuard, IsVerifiedGuard, IsProfileCompletedGuard],
         data: {
             verifyUrl: '/verify',
-            addBioUrl: '/complete-profile'
+            addBioUrl: '/complete-profile',
+            loginUrl: '/auth/login'
         }
     }, {
         path: 'auth/register',
@@ -32,10 +34,19 @@ import {IsProfileCompletedGuard} from "./gaurds/is-profile-completed/is-profile-
     },
         {
             path: 'verify',
-            component: VerifyComponent
+            component: VerifyComponent,
+            canActivate: [IsLoggedInGuard],
+            data: {
+                loginUrl: '/auth/login'
+            }
+
         }, {
             path: 'complete-profile',
-            component: BioComponent
+            component: BioComponent,
+            canActivate: [IsLoggedInGuard],
+            data: {
+                loginUrl: '/auth/login'
+            }
         }]), LoginComponentModule, AuthServiceModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
     exports: [RouterModule]
 })
