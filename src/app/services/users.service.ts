@@ -28,7 +28,9 @@ export class UsersService {
         });
     }
 
-    getBio(): Observable<void> {
-        return this._httpClient.get<void>(`${environment.apiUrl}/auth/my-bio`);
+     getBio(): Observable<void> {
+        return this.getUserBio$
     }
+
+    private getUserBio$: Observable<void> = this._httpClient.get<void>(`${environment.apiUrl}/auth/my-bio`).pipe(shareReplay(1));
 }

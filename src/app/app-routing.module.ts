@@ -16,11 +16,16 @@ import {IsProfileCompletedGuard} from "./gaurds/is-profile-completed/is-profile-
 import {IsLoggedInGuard} from "./gaurds/is-logged-in/is-logged-in.guard";
 import {LogoutComponent} from "./components/logout/logout.component";
 import {LogoutComponentModule} from "./components/logout/logout.component-module";
+import {AutoLoginGuard} from "./gaurds/auto-login/auto-login.guard";
 
 @NgModule({
     imports: [RouterModule.forRoot([{
         path: 'auth/login',
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [AutoLoginGuard],
+        data: {
+            leadsUrl: '/leads'
+        }
     }, {
         path: 'leads',
         component: LeadsComponent,
@@ -32,7 +37,11 @@ import {LogoutComponentModule} from "./components/logout/logout.component-module
         }
     }, {
         path: 'auth/register',
-        component: RegisterComponent
+        component: RegisterComponent,
+        canActivate: [AutoLoginGuard],
+        data: {
+            leadsUrl: '/leads'
+        }
     },
         {
             path: 'verify',

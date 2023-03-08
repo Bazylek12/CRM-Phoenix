@@ -28,9 +28,9 @@ export class AuthService {
       map(response => response.data),
       tap(response => {
         this._storage.setItem('accessToken', response.accessToken)
-        this._accessTokenSubject.next(response.accessToken)
+        this._accessTokenSubject.next(this._storage.getItem('accessToken')!)
         this._storage.setItem('refreshToken', response.refreshToken)
-        this._refreshTokenSubject.next(response.refreshToken)
+        this._refreshTokenSubject.next(this._storage.getItem('refreshToken')!)
       })
     );
   }
