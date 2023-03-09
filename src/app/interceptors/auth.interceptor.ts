@@ -9,7 +9,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         const token = this._storage.getItem('accessToken')
-        const blackList = ['auth/login'];
+        const blackList = ['auth/login', 'auth/register'];
         if (blackList.find((blackUrl) => request.url.includes(blackUrl))) {
             return next.handle(request);
         } else {

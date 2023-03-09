@@ -3,10 +3,11 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import { Observable } from 'rxjs';
 import {AuthService} from "../../services/auth.service";
 import {map, take} from "rxjs/operators";
+import {UsersService} from "../../services/users.service";
 
 @Injectable({ providedIn: 'root' })
 export class AutoLoginGuard implements CanActivate {
-  constructor(private _authService: AuthService, private _router: Router) {
+  constructor(private _authService: AuthService, private _router: Router, private _usersService: UsersService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
