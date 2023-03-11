@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest, shareReplay } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserResponse } from '../../responses/user.response';
 import { LeadModel } from '../../models/lead.model';
@@ -21,6 +21,8 @@ export class LeadsComponent {
   readonly getAllActivities$: Observable<ActivityModel[]> = this._leadsService.getActivities()
   private _filterModalSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public filterModal$: Observable<boolean> = this._filterModalSubject.asObservable();
+  private _userMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public userMenu$: Observable<boolean> = this._userMenuSubject.asObservable();
 
   constructor(private _usersService: UsersService, private _authService: AuthService, private _router: Router, private _leadsService: LeadsService) {
   }
@@ -55,6 +57,13 @@ export class LeadsComponent {
     }))
   }
 
+  public toggleUserMenu(): void {
+    this.filterModal$.pipe(
+      tap(toggle => {
+        this._userMenuSubject.next(!toggle)
+      })
+    ).subscribe()
+  }
   public showFilterModal(): void {
     this._filterModalSubject.next(true);
     console.log(this._filterModalSubject.value)

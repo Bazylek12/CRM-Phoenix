@@ -20,8 +20,10 @@
                     </a>
                 </div>
                 <ul class="navbar-nav navbar-nav-icons flex-row">
-                    <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#"
+                    <li class="nav-item dropdown">
+                      <a class="nav-link lh-1 pe-0" id="navbarDropdownUser"
                                                      role="button"
+                                                     (click)="toggleUserMenu()"
                                                      data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                                      aria-haspopup="true" aria-expanded="false">
                         <div class="avatar avatar-l ">
@@ -29,9 +31,9 @@
 
                         </div>
                     </a>
-                        <div *ngIf="userDetails$ | async as user "
+                        <div *ngIf="userDetails$ | async as user"
                              class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border border-300"
-                             aria-labelledby="navbarDropdownUser" >
+                             [ngClass]="{show: userMenu$ | async}" aria-labelledby="navbarDropdownUser" data-bs-popper="static">
                             <div class="card position-relative border-0">
                                 <div class="card-body p-0">
                                     <div class="text-center pt-4 pb-3">
@@ -40,7 +42,7 @@
                                                  alt=""/>
 
                                         </div>
-                                        <h6 class="mt-2 text-black">{{ user.user.context.email }}</h6>
+                                        <h6 class="mt-2 text-black">{{ user.user.context.email.split('@')[0] }}</h6>
                                     </div>
                                 </div>
 
@@ -84,13 +86,13 @@
                                                                     data-bs-target="#filterModal" data-boundary="window" aria-haspopup="true" aria-expanded="false"
                                                                     data-bs-reference="parent" (click)="showFilterModal()"><span class="fa-solid fa-filter text-primary"
                                                                                                      data-fa-transform="down-3"></span></button>
-                                                            <div class="modal fade" id="filterModal" tabindex="-1" [ngClass]="{show: filterModal$|async}">
+                                                            <div class="modal fade" id="filterModal" tabindex="-1" [ngClass]="{show: filterModal$ | async, displayModal: filterModal$ | async}">
                                                                 <div class="modal-dialog modal-dialog-centered">
                                                                     <div class="modal-content border">
                                                                         <form id="addEventForm" autocomplete="off">
                                                                             <div class="modal-header border-200 p-4">
                                                                                 <h5 class="modal-title text-1000 fs-2 lh-sm">Filter</h5>
-                                                                                <button class="btn p-1 text-900" type="button" data-bs-dismiss="modal"
+                                                                                <button class="btn p-1 text-900" type="button" data-bs-dismiss="modal" (click)="hideFilterModal()"
                                                                                         aria-label="Close"><span class="fas fa-times fs--1"> </span></button>
                                                                             </div>
                                                                             <div class="modal-body pt-4 pb-2 px-4">
@@ -153,7 +155,7 @@
                                                                                     class="modal-footer d-flex justify-content-end align-items-center px-4 pb-4 border-0 pt-3">
                                                                                 <button class="btn btn-sm btn-phoenix-primary px-4 fs--2 my-0" type="submit"> <span
                                                                                         class="fas fa-arrows-rotate me-2 fs--2"></span>Reset</button>
-                                                                                <button class="btn btn-sm btn-primary px-9 fs--2 my-0" type="submit">Done</button>
+                                                                                <button class="btn btn-sm btn-primary px-9 fs--2 my-0" type="submit" (click)="hideFilterModal()">Done</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
