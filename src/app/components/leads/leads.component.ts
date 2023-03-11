@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest, shareReplay } from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, combineLatest, shareReplay, of, startWith} from 'rxjs';
+import {map, take, tap} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserResponse } from '../../responses/user.response';
 import { LeadModel } from '../../models/lead.model';
@@ -8,6 +8,8 @@ import { ActivityModel } from '../../models/activity.model';
 import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../services/auth.service';
 import { LeadsService } from '../../services/leads.service';
+import {FormControl, FormGroup} from "@angular/forms";
+import {LeadSizeModel} from "../../models/lead-size.model";
 
 @Component({
   selector: 'app-leads',
@@ -23,28 +25,65 @@ export class LeadsComponent {
   public filterModal$: Observable<boolean> = this._filterModalSubject.asObservable();
   private _userMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public userMenu$: Observable<boolean> = this._userMenuSubject.asObservable();
+  public filterSize$: Observable<LeadSizeModel[]> = of([
+    {id: '1', from: 0, to: 50},
+    {id: '2', from: 51, to: 100},
+    {id: '3', from: 101, to: 500},
+    {id: '4', from: 501, to: 1000},
+    {id: '5', from: 1001, to: undefined},
+  ]).pipe(
+    tap(data => this.onLeadSizeListAddControls(data))
+  )
+
+  readonly sizeForm: FormGroup = new FormGroup({});
+  readonly filterForm: FormGroup = new FormGroup({ size: this.sizeForm });
 
   constructor(private _usersService: UsersService, private _authService: AuthService, private _router: Router, private _leadsService: LeadsService) {
   }
 
-  readonly LeadsList$: Observable<LeadModel[]> = combineLatest([
+
+  readonly selectedSizeIds$: Observable<string[]> = this.sizeForm.valueChanges.pipe(startWith([])).pipe(
+    map((sizeIds) =>
+      Object.keys(sizeIds).reduce((a: string[], c) => {
+        if (sizeIds[c]) {
+          return [...a, c];
+        } else {
+          return a;
+        }
+      }, [])
+    )
+  );
+  readonly selectedSizesList$: Observable<LeadSizeModel[]> = combineLatest([
+    this.selectedSizeIds$,
+    this.filterSize$
+  ]).pipe(map(([sizeIds, leadSizes]) => this.mapSizeIdsToSizeModelList(leadSizes, sizeIds)))
+
+  readonly filteredLeadList$: Observable<LeadModel[]> = combineLatest([
+    this.selectedSizesList$,
     this._leadsService.getLeads().pipe(shareReplay(1)),
-    this._leadsService.getActivities().pipe(shareReplay(1))
+  ]).pipe(
+    map(([sizeList, leadList]) =>
+      leadList.filter(
+        (lead) => sizeList.length === 0 ||
+          sizeList.find(
+            (size) => lead.companySize.total >= size?.from && (size.to ? lead.companySize.total <= size.to : true)
+          )
+      )
+    )
+  )
+  readonly LeadsList$: Observable<LeadModel[]> = combineLatest([
+    this.filteredLeadList$,
+    this._leadsService.getActivities().pipe(shareReplay(1)),
   ]).pipe(
     map(([leads, activities]) => this._mapLeadQuery(leads, activities))
   )
-
-  logout(): void {
-    this._authService.logout();
-    this._router.navigate(['logged-out'])
-  }
-
   private _mapLeadQuery(leads: LeadModel[], activities: ActivityModel[]): LeadModel[] {
     const activitiesTagMap = activities.reduce((acc, curr) => (
       { ...acc, [curr.id]: curr.name }
     ), {} as Record<string, string>);
 
-    return leads.map(lead => ({
+    return leads
+      .map(lead => ({
       name: lead.name,
       annualRevenue: lead.annualRevenue,
       hiring: lead.hiring,
@@ -58,9 +97,10 @@ export class LeadsComponent {
   }
 
   public toggleUserMenu(): void {
-    this.filterModal$.pipe(
-      tap(toggle => {
-        this._userMenuSubject.next(!toggle)
+    this.userMenu$.pipe(
+      take(1),
+      tap(status => {
+        this._userMenuSubject.next(!status)
       })
     ).subscribe()
   }
@@ -71,5 +111,24 @@ export class LeadsComponent {
 
   public hideFilterModal(): void {
     this._filterModalSubject.next(false);
+  }
+
+  private mapSizeIdsToSizeModelList(sizeList: LeadSizeModel[], sizeIds: string[]): LeadSizeModel[] {
+    const sizeMap = sizeList.reduce((a, c) => ({ ...a, [c.id]: c }), {} as Record<string, any>);
+    return sizeIds.map((sizeId) => sizeMap[sizeId]);
+  }
+
+  private onLeadSizeListAddControls(sizeList: LeadSizeModel[]): void {
+    sizeList.forEach((leadSize) =>
+      this.sizeForm.addControl(leadSize.id, new FormControl(false, { nonNullable: true }))
+    );
+  }
+  logout(): void {
+    this._authService.logout();
+    this._router.navigate(['logged-out'])
+  }
+
+  onFormReset(): void {
+    this.filterForm.reset()
   }
 }
