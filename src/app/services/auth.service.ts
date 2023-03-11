@@ -45,6 +45,16 @@ export class AuthService {
       })
     )
   }
+
+  refreshToken(refreshToken: string): Observable<LoginResponse> {
+    return this._httpClient.post<ApiResponse<LoginResponse>>(`${environment.apiUrl}/auth/refresh`, { data: {refreshToken: refreshToken} }).pipe(
+      map(response => response.data),
+      tap(response => {
+        localStorage.setItem('accessToken', response.accessToken)
+        localStorage.setItem('refreshToken', response.refreshToken)
+      })
+    );
+  }
   public logout(): void {
     this._accessTokenSubject.next('')
     this._refreshTokenSubject.next('')
