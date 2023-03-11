@@ -17,6 +17,8 @@ import {IsLoggedInGuard} from "./gaurds/is-logged-in/is-logged-in.guard";
 import {LogoutComponent} from "./components/logout/logout.component";
 import {LogoutComponentModule} from "./components/logout/logout.component-module";
 import {AutoLoginGuard} from "./gaurds/auto-login/auto-login.guard";
+import {CreateLeadComponent} from "./components/create-lead/create-lead.component";
+import {CreateLeadComponentModule} from "./components/create-lead/create-lead.component-module";
 
 @NgModule({
     imports: [RouterModule.forRoot([{
@@ -61,7 +63,10 @@ import {AutoLoginGuard} from "./gaurds/auto-login/auto-login.guard";
         },  {
             path: 'logged-out',
             component: LogoutComponent
-        }]), LoginComponentModule, AuthServiceModule, LogoutComponentModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
+        }, {
+            path: 'create-lead',
+            component: CreateLeadComponent
+      }]), LoginComponentModule, AuthServiceModule, LogoutComponentModule, CreateLeadComponentModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
     exports: [RouterModule]
 })
 export class AppRoutingModule {
