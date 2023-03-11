@@ -19,8 +19,8 @@ import {LeadSizeModel} from "../../models/lead-size.model";
 })
 export class LeadsComponent {
   readonly userDetails$: Observable<UserResponse> = this._usersService.getUserData();
-  readonly getAllLeads$: Observable<LeadModel[]> = this._leadsService.getLeads();
-  readonly getAllActivities$: Observable<ActivityModel[]> = this._leadsService.getActivities()
+  readonly getAllLeads$: Observable<LeadModel[]> = this._leadsService.getLeads().pipe(shareReplay(1));
+  readonly getAllActivities$: Observable<ActivityModel[]> = this._leadsService.getActivities().pipe(shareReplay(1))
   private _filterModalSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public filterModal$: Observable<boolean> = this._filterModalSubject.asObservable();
   private _userMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -32,7 +32,7 @@ export class LeadsComponent {
     {id: '4', from: 501, to: 1000},
     {id: '5', from: 1001, to: undefined},
   ]).pipe(
-    tap(data => this.onLeadSizeListAddControls(data))
+    tap(data => this.sizeControls(data))
   )
 
   readonly sizeForm: FormGroup = new FormGroup({});
@@ -42,7 +42,8 @@ export class LeadsComponent {
   }
 
 
-  readonly selectedSizeIds$: Observable<string[]> = this.sizeForm.valueChanges.pipe(startWith([])).pipe(
+  readonly selectedSizeIds$: Observable<string[]> = this.sizeForm.valueChanges.pipe(
+    startWith([])).pipe(
     map((sizeIds) =>
       Object.keys(sizeIds).reduce((a: string[], c) => {
         if (sizeIds[c]) {
@@ -56,11 +57,11 @@ export class LeadsComponent {
   readonly selectedSizesList$: Observable<LeadSizeModel[]> = combineLatest([
     this.selectedSizeIds$,
     this.filterSize$
-  ]).pipe(map(([sizeIds, leadSizes]) => this.mapSizeIdsToSizeModelList(leadSizes, sizeIds)))
+  ]).pipe(map(([sizeIds, leadSizes]) => this.mapSizeIdsToList(sizeIds, leadSizes)))
 
   readonly filteredLeadList$: Observable<LeadModel[]> = combineLatest([
     this.selectedSizesList$,
-    this._leadsService.getLeads().pipe(shareReplay(1)),
+    this.getAllLeads$
   ]).pipe(
     map(([sizeList, leadList]) =>
       leadList.filter(
@@ -73,7 +74,7 @@ export class LeadsComponent {
   )
   readonly LeadsList$: Observable<LeadModel[]> = combineLatest([
     this.filteredLeadList$,
-    this._leadsService.getActivities().pipe(shareReplay(1)),
+    this.getAllActivities$
   ]).pipe(
     map(([leads, activities]) => this._mapLeadQuery(leads, activities))
   )
@@ -113,14 +114,14 @@ export class LeadsComponent {
     this._filterModalSubject.next(false);
   }
 
-  private mapSizeIdsToSizeModelList(sizeList: LeadSizeModel[], sizeIds: string[]): LeadSizeModel[] {
-    const sizeMap = sizeList.reduce((a, c) => ({ ...a, [c.id]: c }), {} as Record<string, any>);
+  private mapSizeIdsToList( sizeIds: string[], sizeList: LeadSizeModel[]): LeadSizeModel[] {
+    const sizeMap = sizeList.reduce((a, c) => ({ ...a, [c.id]: c }), {} as Record<string, LeadSizeModel>);
     return sizeIds.map((sizeId) => sizeMap[sizeId]);
   }
 
-  private onLeadSizeListAddControls(sizeList: LeadSizeModel[]): void {
+  private sizeControls(sizeList: LeadSizeModel[]): void {
     sizeList.forEach((leadSize) =>
-      this.sizeForm.addControl(leadSize.id, new FormControl(false, { nonNullable: true }))
+      this.sizeForm.addControl(leadSize.id, new FormControl(false))
     );
   }
   logout(): void {
