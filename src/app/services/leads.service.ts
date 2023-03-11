@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from "../../environments/environment";
 import {LeadModel} from "../models/lead.model";
-import {map, tap} from "rxjs/operators";
+import {map} from "rxjs/operators";
 import {ApiResponse} from "../responses/api.response";
 import {ActivityModel} from "../models/activity.model";
 
@@ -18,6 +18,9 @@ export class LeadsService {
     );
   }
 
+  createLead(payload: LeadModel): Observable<LeadModel> {
+    return this._httpClient.post<LeadModel>(`${environment.apiUrl}/leads`, {data: payload})
+  }
   getActivities(): Observable<ActivityModel[]> {
     return this._httpClient.get<ApiResponse<ActivityModel[]>>(`${environment.apiUrl}/leads/activities`).pipe(
         map(response => response.data),
