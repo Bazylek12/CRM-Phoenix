@@ -76,7 +76,7 @@
             <div class="col-auto" *ngIf="user.user.context.role === 'admin'">
               <div class="d-md-flex justify-content-between">
                 <div>
-                  <button class="btn btn-primary me-4"><span class="fas fa-plus me-2"></span>Create Lead</button>
+                  <button [routerLink]="['/create-lead']" class="btn btn-primary me-4"><span class="fas fa-plus me-2"></span>Create Lead</button>
                 </div>
               </div>
             </div>
