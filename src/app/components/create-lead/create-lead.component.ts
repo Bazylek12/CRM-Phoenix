@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {BehaviorSubject, Observable, of, shareReplay} from 'rxjs';
 import { take, tap } from 'rxjs/operators';
@@ -20,7 +20,8 @@ export class CreateLeadComponent {
   constructor(private _usersService: UsersService,
               private _authService: AuthService,
               private _router: Router,
-              private _leadsService: LeadsService) {
+              private _leadsService: LeadsService,
+              private _cdr: ChangeDetectorRef) {
   }
 
   readonly activitiesList$: Observable<ActivityModel[]> = this._leadsService.getActivities().pipe(
@@ -133,7 +134,13 @@ export class CreateLeadComponent {
             junior: this.hiringForm.value.junior,
             talentProgram: this.hiringForm.value.talentProgram
           }
-        }).subscribe()
+        }).subscribe({
+        next: () => this._router.navigate(['/leads']),
+        error: (err) => {
+          this.createLeadForm.setErrors({serverError: err.error.message })
+          this._cdr.detectChanges();
+        }
+      })
     }
   }
 

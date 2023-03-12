@@ -233,6 +233,9 @@
                 <label for="floatingProjectOverview">Lead description</label>
               </div>
             </div>
+            <div class="text-danger fs--1" *ngIf="createLeadForm.hasError('serverError')">
+              {{createLeadForm.getError('serverError')}}
+            </div>
             <div class="col-12 d-flex justify-content-end mt-6">
               <button class="btn btn-primary" [disabled]="!createLeadForm.valid">Create lead</button>
             </div>
