@@ -16,7 +16,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const refreshToken = localStorage.getItem('refreshToken');
-    const blackList = ['/auth/login']
+    const blackList = ['/auth/login', '/auth/register']
     if (blackList.find((url) => request.url.endsWith(url)) !== undefined) {
       return next.handle(request)
     } else {
