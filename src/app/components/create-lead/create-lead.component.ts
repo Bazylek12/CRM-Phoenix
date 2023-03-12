@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {BehaviorSubject, Observable, of, shareReplay} from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../services/auth.service';
 import { LeadsService } from '../../services/leads.service';
 import { UserResponse } from '../../responses/user.response';
+import {CheckboxValidator} from "../../validators/checkbox.validator";
 
 @Component({
   selector: 'app-create-lead',
@@ -32,31 +33,59 @@ export class CreateLeadComponent {
   private _userMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public userMenu$: Observable<boolean> = this._userMenuSubject.asObservable();
   readonly leadInfoForm: FormGroup = new FormGroup({
-    companyName: new FormControl(),
-    websiteLink: new FormControl(),
-    linkedinLink: new FormControl(),
-    location: new FormControl(),
-    industry: new FormControl(),
-    annualRevenue: new FormControl()
+    companyName: new FormControl('', [
+      Validators.required
+    ]),
+    websiteLink: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
+    ]),
+    linkedinLink: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/)
+    ]),
+    location: new FormControl('', [
+      Validators.required
+    ]),
+    industry: new FormControl('', [
+      Validators.required
+    ]),
+    annualRevenue: new FormControl('', [
+      Validators.required
+    ])
   });
-  readonly activitiesForm: FormGroup = new FormGroup({});
+  readonly activitiesForm: FormGroup = new FormGroup({}, [
+    Validators.required,
+    CheckboxValidator.minOneSelected
+  ]);
   readonly sizeForm: FormGroup = new FormGroup({
-    total: new FormControl(),
-    dev: new FormControl(),
-    fe: new FormControl()
+    total: new FormControl('', [
+      Validators.required,
+      Validators.min(1)
+    ]),
+    dev: new FormControl('', [
+      Validators.required,
+      Validators.min(1)
+    ]),
+    fe: new FormControl('', [
+      Validators.required,
+      Validators.min(1)
+    ])
   });
   readonly hiringForm: FormGroup = new FormGroup({
     active: new FormControl(false),
     junior: new FormControl(false),
     talentProgram: new FormControl(false)
-  });
+  }, [Validators.required]);
   readonly createLeadForm: FormGroup = new FormGroup({
     leadInfo: this.leadInfoForm,
     activities: this.activitiesForm,
     companySize: this.sizeForm,
     hiring: this.hiringForm,
-    status: new FormControl(),
-    notes: new FormControl(),
+    status: new FormControl('', [
+      Validators.required
+    ]),
+    notes: new FormControl(''),
   });
 
   public toggleUserMenu(): void {

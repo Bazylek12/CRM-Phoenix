@@ -61,7 +61,7 @@
               <h2 class="mb-4">Create a new lead</h2>
               <div class="d-flex mb-3">
                 <button [routerLink]="['/leads']" class="btn btn-phoenix-primary me-2 px-6">Cancel</button>
-                <button (click)="onCreateLeadFormSubmitted(createLeadForm)" class="btn btn-primary">Create lead</button>
+                <button (click)="onCreateLeadFormSubmitted(createLeadForm)" [disabled]="!createLeadForm.valid" class="btn btn-primary">Create lead</button>
               </div>
             </div>
           </div>
@@ -76,36 +76,68 @@
               <div class="form-floating">
                 <input class="form-control" formControlName="companyName" id="floatingInputCompanyname" type="text" placeholder="Company name" />
                 <label for="floatingInputCompanyname">Company name</label>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('companyName')?.touched && leadInfoForm.get('companyName')?.hasError('required')">
+                  Company name is required!
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-floating">
                 <input class="form-control" formControlName="websiteLink" id="floatingInputWebsitelink" type="text" placeholder="Website link" />
                 <label for="floatingInputWebsitelink">Website link</label>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('websiteLink')?.touched && leadInfoForm.get('websiteLink')?.hasError('required')">
+                  Website link is required!
+                </div>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('websiteLink')?.touched && leadInfoForm.get('websiteLink')?.hasError('pattern')">
+                  Link is invalid!
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-floating">
                 <input class="form-control" formControlName="linkedinLink" id="floatingInputLinkedin" type="text" placeholder="Linkedin link" />
                 <label for="floatingInputLinkedin">Linkedin link</label>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('linkedinLink')?.touched && leadInfoForm.get('linkedinLink')?.hasError('required')">
+                  LinkedIn link is required!
+                </div>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('linkedinLink')?.touched && leadInfoForm.get('linkedinLink')?.hasError('pattern')">
+                  Link is invalid!
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-floating">
                 <input class="form-control" formControlName="location" id="floatingInputLocation" type="text" placeholder="Location" />
                 <label for="floatingInputLocation">Location</label>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('location')?.touched && leadInfoForm.get('location')?.hasError('required')">
+                  Location is required!
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-floating">
                 <input class="form-control" formControlName="industry" id="floatingInputIndustry" type="text" placeholder="Industry" />
                 <label for="floatingInputIndustry">Industry</label>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('industry')?.touched && leadInfoForm.get('industry')?.hasError('required')">
+                  Industry is required!
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-floating">
                 <input class="form-control" formControlName="annualRevenue" id="floatingInputRevenue" type="text" placeholder="revenue" />
                 <label for="floatingInputRevenue">Annual revenue </label>
+                <div class="text-danger fs--1"
+                     *ngIf="leadInfoForm.get('annualRevenue')?.touched && leadInfoForm.get('annualRevenue')?.hasError('required')">
+                  Annual revenue is required!
+                </div>
               </div>
             </div>
             </ng-container>
@@ -117,6 +149,9 @@
                   <input class="form-check-input" id="inlineCheckbox1" type="checkbox" [formControlName]="activity.id" [id]="activity.id" />
                   <label class="form-check-label" [for]="activity.id">{{ activity.name }}</label>
                 </div>
+                <div class="text-danger text-center fs--1" *ngIf="activitiesForm.touched && activitiesForm.hasError('minOneSelected')">
+                  Please select at least one activity
+                </div>
               </div>
             </div>
             </ng-container>
@@ -126,18 +161,30 @@
               <div class="form-floating">
                 <input class="form-control" formControlName="total" id="floatingInputTotalSize" type="number" placeholder="Total size" />
                 <label for="floatingInputTotalSize">Total size</label>
+                <div class="text-danger fs--1"
+                     *ngIf="sizeForm.get('total')?.touched && sizeForm.get('total')?.invalid">
+                  Total size must be greater than 0!
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-floating">
                 <input class="form-control" formControlName="dev" id="floatingInputDevSize" type="number" placeholder="Dev Size" />
                 <label for="floatingInputDevSize">Dev Size</label>
+                <div class="text-danger fs--1"
+                     *ngIf="sizeForm.get('dev')?.touched && sizeForm.get('dev')?.invalid">
+                  Dev size must be greater than 0!
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-floating">
                 <input class="form-control" formControlName="fe" id="floatingInputFESize" type="number" placeholder="FE Size" />
                 <label for="floatingInputFESize">FE Size</label>
+                <div class="text-danger fs--1"
+                     *ngIf="sizeForm.get('fe')?.touched && sizeForm.get('fe')?.invalid">
+                  FE size must be greater than 0!
+                </div>
               </div>
             </div>
             </ng-container>
@@ -173,6 +220,10 @@
               <select class="form-select form-select-lg mb-3" formControlName="status">
                 <option *ngFor="let status of statusList$ | async" [value]="status">{{status}}</option>
               </select>
+              <div class="text-danger fs--1"
+                   *ngIf="createLeadForm.get('status')?.touched && createLeadForm.get('status')?.invalid">
+                Choose status!
+              </div>
             </div>
             <h4 class="mt-6">Notes</h4>
             <div class="col-12">
@@ -183,7 +234,7 @@
               </div>
             </div>
             <div class="col-12 d-flex justify-content-end mt-6">
-              <button class="btn btn-primary">Create lead</button>
+              <button class="btn btn-primary" [disabled]="!createLeadForm.valid">Create lead</button>
             </div>
           </form>
         </div>
