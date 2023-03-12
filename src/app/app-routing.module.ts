@@ -20,16 +20,19 @@ import {AutoLoginGuard} from "./gaurds/auto-login/auto-login.guard";
 import {CreateLeadComponent} from "./components/create-lead/create-lead.component";
 import {CreateLeadComponentModule} from "./components/create-lead/create-lead.component-module";
 import {IsAdminGuard} from "./gaurds/is-admin/is-admin.guard";
+import {AuthRoutesModule} from "./auth.routes";
 
 @NgModule({
-    imports: [RouterModule.forRoot([{
-        path: 'auth/login',
-        component: LoginComponent,
-        canActivate: [AutoLoginGuard],
-        data: {
-            leadsUrl: '/leads'
-        }
-    }, {
+    imports: [RouterModule.forRoot([
+      {
+        path: '**',
+        component: LeadsComponent
+      },
+      {
+        path: 'auth',
+        loadChildren: () => AuthRoutesModule
+      },
+      {
         path: 'leads',
         component: LeadsComponent,
         canActivate: [IsLoggedInGuard, IsVerifiedGuard, IsProfileCompletedGuard],
@@ -37,13 +40,6 @@ import {IsAdminGuard} from "./gaurds/is-admin/is-admin.guard";
             verifyUrl: '/verify',
             addBioUrl: '/complete-profile',
             loginUrl: '/auth/login'
-        }
-    }, {
-        path: 'auth/register',
-        component: RegisterComponent,
-        canActivate: [AutoLoginGuard],
-        data: {
-            leadsUrl: '/leads'
         }
     },
         {
@@ -72,7 +68,7 @@ import {IsAdminGuard} from "./gaurds/is-admin/is-admin.guard";
               role: 'admin',
               leadsUrl: '/leads'
             }
-      }]), LoginComponentModule, AuthServiceModule, LogoutComponentModule, CreateLeadComponentModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
+      }]), AuthServiceModule, LogoutComponentModule, CreateLeadComponentModule, LeadsComponentModule, VerifyComponentModule, BioComponentModule],
     exports: [RouterModule]
 })
 export class AppRoutingModule {
