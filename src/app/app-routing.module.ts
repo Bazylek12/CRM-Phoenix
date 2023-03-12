@@ -24,10 +24,7 @@ import {AuthRoutesModule} from "./auth.routes";
 
 @NgModule({
     imports: [RouterModule.forRoot([
-      {
-        path: '**',
-        component: LeadsComponent
-      },
+      { path: '',   redirectTo: '/leads', pathMatch: 'full' },
       {
         path: 'auth',
         loadChildren: () => AuthRoutesModule
