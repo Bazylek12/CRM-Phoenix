@@ -19,6 +19,7 @@ import {LogoutComponentModule} from "./components/logout/logout.component-module
 import {AutoLoginGuard} from "./gaurds/auto-login/auto-login.guard";
 import {CreateLeadComponent} from "./components/create-lead/create-lead.component";
 import {CreateLeadComponentModule} from "./components/create-lead/create-lead.component-module";
+import {IsAdminGuard} from "./gaurds/is-admin/is-admin.guard";
 
 @NgModule({
     imports: [RouterModule.forRoot([{
@@ -65,7 +66,12 @@ import {CreateLeadComponentModule} from "./components/create-lead/create-lead.co
             component: LogoutComponent
         }, {
             path: 'create-lead',
-            component: CreateLeadComponent
+            component: CreateLeadComponent,
+            canActivate: [IsAdminGuard],
+            data: {
+              role: 'admin',
+              leadsUrl: '/leads'
+            }
       }]), LoginComponentModule, AuthServiceModule, LogoutComponentModule, CreateLeadComponentModule, LeadsComponentModule, RegisterComponentModule, VerifyComponentModule, BioComponentModule],
     exports: [RouterModule]
 })
