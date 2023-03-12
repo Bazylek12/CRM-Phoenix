@@ -20,7 +20,10 @@ import {LeadSizeModel} from "../../models/lead-size.model";
 export class LeadsComponent {
   readonly userDetails$: Observable<UserResponse> = this._usersService.getUserData();
   readonly getAllLeads$: Observable<LeadModel[]> = this._leadsService.getLeads().pipe(shareReplay(1));
-  readonly getAllActivities$: Observable<ActivityModel[]> = this._leadsService.getActivities().pipe(shareReplay(1))
+  readonly getAllActivities$: Observable<ActivityModel[]> = this._leadsService.getActivities().pipe(
+    shareReplay(1),
+    tap(data => this.activitiesControls(data))
+  )
   private _filterModalSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public filterModal$: Observable<boolean> = this._filterModalSubject.asObservable();
   private _userMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -32,11 +35,16 @@ export class LeadsComponent {
     {id: '4', from: 501, to: 1000},
     {id: '5', from: 1001, to: undefined},
   ]).pipe(
+    shareReplay(1),
     tap(data => this.sizeControls(data))
   )
 
   readonly sizeForm: FormGroup = new FormGroup({});
-  readonly filterForm: FormGroup = new FormGroup({ size: this.sizeForm });
+  readonly scopesForm: FormGroup = new FormGroup({});
+  readonly filterForm: FormGroup = new FormGroup({
+    size: this.sizeForm,
+    scope: this.scopesForm
+  });
 
   constructor(private _usersService: UsersService, private _authService: AuthService, private _router: Router, private _leadsService: LeadsService) {
   }
@@ -54,6 +62,19 @@ export class LeadsComponent {
       }, [])
     )
   );
+
+  readonly selectedScopes$: Observable<string[]> = this.scopesForm.valueChanges.pipe(
+    startWith([])).pipe(
+      map((scopes) =>
+        Object.keys(scopes).reduce((acc: string[], curr) => {
+          if (scopes[curr]) {
+            return [...acc, curr];
+          } else {
+            return acc;
+          }
+        }, [])
+      )
+  )
   readonly selectedSizesList$: Observable<LeadSizeModel[]> = combineLatest([
     this.selectedSizeIds$,
     this.filterSize$
@@ -61,15 +82,19 @@ export class LeadsComponent {
 
   readonly filteredLeadList$: Observable<LeadModel[]> = combineLatest([
     this.selectedSizesList$,
-    this.getAllLeads$
+    this.getAllLeads$,
+    this.selectedScopes$
   ]).pipe(
-    map(([sizeList, leadList]) =>
+    map(([sizeList, leadList, scopes]) =>
       leadList.filter(
         (lead) => sizeList.length === 0 ||
           sizeList.find(
             (size) => lead.companySize.total >= size?.from && (size.to ? lead.companySize.total <= size.to : true)
           )
-      )
+      ).filter(lead => {
+        let idSet = new Set(lead.activityIds);
+        return scopes.length === 0 ||scopes.every(scope => idSet.has(scope))
+      })
     )
   )
   readonly LeadsList$: Observable<LeadModel[]> = combineLatest([
@@ -107,7 +132,6 @@ export class LeadsComponent {
   }
   public showFilterModal(): void {
     this._filterModalSubject.next(true);
-    console.log(this._filterModalSubject.value)
   }
 
   public hideFilterModal(): void {
@@ -122,6 +146,11 @@ export class LeadsComponent {
   private sizeControls(sizeList: LeadSizeModel[]): void {
     sizeList.forEach((leadSize) =>
       this.sizeForm.addControl(leadSize.id, new FormControl(false))
+    );
+  }
+  private activitiesControls(activitiesList: ActivityModel[]): void {
+    activitiesList.forEach((activity) =>
+      this.scopesForm.addControl(activity.id, new FormControl(false))
     );
   }
   logout(): void {

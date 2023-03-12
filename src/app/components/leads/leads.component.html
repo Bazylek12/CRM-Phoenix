@@ -111,11 +111,11 @@
                             </select>
                           </div>
                           <form [formGroup]="filterForm">
-                          <div class="mb-3">
+                          <div class="mb-3" formGroupName="scope">
                             <label class="fw-bold mb-2 text-1000">Scope</label>
-                            <div class="form-check" *ngFor="let item of getAllActivities$ | async">
-                              <input class="form-check-input" type="checkbox" value=""/>
-                              <label class="form-check-label" > {{ item.name }}</label>
+                            <div class="form-check" *ngFor="let activity of getAllActivities$ | async">
+                              <input class="form-check-input" [formControlName]="activity.id" [id]="activity.id" type="checkbox"/>
+                              <label class="form-check-label" [for]="activity.id" > {{ activity.name }}</label>
                             </div>
                           </div>
 
@@ -219,46 +219,6 @@
                 <td class="date align-middle white-space-nowrap text-600 ps-4 text-700 border-end"><span
                   class="badge badge-phoenix badge-phoenix-primary">Investigation</span></td>
               </tr>
-              <!--                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">-->
-              <!--                                <td class="name align-middle white-space-nowrap">-->
-              <!--                                    <div class="d-flex align-items-center">-->
-              <!--                                        <div><a class="fs-0 fw-bold" href="#">Facebook</a>-->
-              <!--                                            <div class="d-flex align-items-center justify-content-around">-->
-              <!--                                                <a href="#"><i class="fa-brands fa-linkedin"></i></a>-->
-              <!--                                                <a href="#"><i class="fa-solid fa-link"></i></a>-->
-              <!--                                            </div>-->
-              <!--                                        </div>-->
-              <!--                                    </div>-->
-              <!--                                </td>-->
-              <!--                                <td class="align-middle white-space-nowrap fw-semi-bold text-1000 ps-4 border-end">-->
-              <!--                                    <div><span-->
-              <!--                                            class="badge badge-phoenix badge-phoenix-warning">Internal Projects</span>-->
-              <!--                                    </div>-->
-              <!--                                </td>-->
-              <!--                                <td class="align-middle white-space-nowrap fw-semi-bold text-1000 ps-4 border-end">-->
-              <!--                                    <div>Is hiring: <i class="fa-solid fa-check"></i></div>-->
-              <!--                                    <div>Juniors: <i class="fa-solid fa-xmark"></i></div>-->
-              <!--                                    <div>Talent Program : <i class="fa-solid fa-xmark"></i></div>-->
-              <!--                                </td>-->
-              <!--                                <td-->
-              <!--                                        class="company align-middle white-space-nowrap text-600 ps-4 border-end fw-semi-bold text-1000">-->
-              <!--                                    MarketTech-->
-              <!--                                </td>-->
-              <!--                                <td class="date align-middle white-space-nowrap text-600 ps-4 text-700 border-end">-->
-              <!--                                    Global-->
-              <!--                                </td>-->
-              <!--                                <td class="date align-middle white-space-nowrap text-600 ps-4 text-700 border-end">-->
-              <!--                                    <div>Total: 42000</div>-->
-              <!--                                    <div>Dev: 38000</div>-->
-              <!--                                    <div>FE: 8000</div>-->
-              <!--                                </td>-->
-              <!--                                <td class="date align-middle white-space-nowrap text-600 ps-4 text-700 border-end">-->
-              <!--                                    <div>Total: 2000</div>-->
-              <!--                                    <div>PE: 2.1</div>-->
-              <!--                                </td>-->
-              <!--                                <td class="date align-middle white-space-nowrap text-600 ps-4 text-700 border-end"><span-->
-              <!--                                        class="badge badge-phoenix badge-phoenix-primary">Investigation</span></td>-->
-              <!--                            </tr>-->
               </tbody>
             </table>
           </div>
